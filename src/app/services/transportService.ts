@@ -24,11 +24,12 @@ export async function getTransportAll() {
   console.log('Reached get transport :');
 
   try {
-    console.log("Calling:", `${baseUrl}/api/TransportEntryApi/getall`);
-    const res = await fetch(`${baseUrl}/api/TransportEntryApi/getall`, {
+    console.log("Calling:", `${baseUrl}/api/TransportEntryApi/getall/1/10`);
+    const res = await fetch(`${baseUrl}/api/TransportEntryApi/getall/1/10`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
+
 
     return res; // <-- FIX
   } 
@@ -101,3 +102,14 @@ export async function parseContent(content : any) {
   }
 
 }
+const API_URL = "https://localhost:5001/api/transport";
+
+
+
+export const updateTransport = (id: number, data: any) =>
+  fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
