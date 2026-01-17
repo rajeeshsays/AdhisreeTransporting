@@ -8,6 +8,7 @@ import { getLocation } from "../services/locationService";
 import { getVehicle } from "../services/vehicleService";
 import { getVehicleType } from "../services/vehicleTypeService";
 import { getParty } from "../services/partyService";
+import styles from "./transport.module.css";
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
 type TransportEntryFormData = {
@@ -33,25 +34,30 @@ interface FieldOption {
   value: string;
   label: string;
 }
-const TransportEntryForm = () => {
-  const [formData, setFormData] = useState<TransportEntryFormData>({
-    id: "",
-    date: "",
-    vehicleNo: "",
-    vehicleTypeId: "",
-    driverId: "",
-    party1: "",
-    party2: [],
-    from: "",
-    to: "",
-    startKM: "",
-    closeKM: "",
-    total: "",
-    loading: "",
-    unloading: "",
-    loadingCommision: "",
-    unloadingCommision: "",
-  });
+const TransportEntryForm = ({transport, onClose, onSave}) => {
+
+  if (!transport) {
+    transport = {
+      id: "",
+      date: "",
+      vehicleNo: "",
+      vehicleTypeId: "",
+      driverId: "",
+      party1: "",
+      party2: [],
+      from: "",
+      to: "",
+      startKM: "",
+      closeKM: "",
+      total: "",
+      loading: "",
+      unloading: "",
+      loadingCommision: "",
+      unloadingCommision: "",
+    };
+  }   
+ const [formData, setFormData] = useState<TransportEntryFormData>(transport as TransportEntryFormData);
+  
 const [driverOptions, setDriverOptions] = useState<FieldOption[]>([]);
 const [locationOptions, setLocationOptions] = useState<FieldOption[]>([]);
 const [vehicleOptions, setVehicleOptions] = useState<FieldOption[]>([]);
@@ -204,6 +210,7 @@ useEffect(() => {   console.log("Fetching form data...");
    });
 
   };
+
 useEffect(() => {
   console.log("Fetching dropdown data...");
   const fetchDropdownData = async () => {
@@ -283,8 +290,11 @@ fetchFormData();
   },[]);
 
   return (
-    <form className="transport-form">
-      <h2>Transport Entry Form</h2>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <form className="transport-form">
+          
+          <h2>Transport Entry Form</h2>
 
   <div className="form-grid">
   {fields.map(({ name, type, label, options }) => {
@@ -334,8 +344,16 @@ fetchFormData();
     );
   })}
 </div>
+<div className="form-actions">
+  <button type="button" onClick={onClose}>Cancel</button>
 <button type="submit">Submit</button>
+
+</div>
 </form>
+</div>
+      </div>
+    
+
       );
 };
 

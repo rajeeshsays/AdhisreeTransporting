@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getTransportAll, createTransport, updateTransport,deleteTransport} from "@/app/services/transportService";
 import styles from "./transportListPage.module.css";
+import TransportEntryForm from "../../transportentry/page";
 
 
 export default function TransportListPage() {
@@ -26,12 +27,16 @@ export default function TransportListPage() {
     fetchTransportList();
   }, []);
 
+
+
+
 const handleAdd = () => {
   setSelectedTransport(null);
   setIsModalOpen(true);
 };
 
 const handleEdit = (transport: any) => {
+  console.log('Editing transport:', transport);
   setSelectedTransport(transport);
   setIsModalOpen(true);
 };
@@ -42,6 +47,10 @@ const handleDelete = async (id: number) => {
   await deleteTransport(id);
   setTransportList(prev => prev.filter(t => t.id !== id));
 };
+
+
+
+
 
 
   return (
@@ -109,6 +118,21 @@ const handleDelete = async (id: number) => {
             )}
           </tbody>
         </table>
+{isModalOpen && (
+  <TransportEntryForm
+    transport={selectedTransport}
+    onClose={() => setIsModalOpen(false)}
+    onSave={() => {
+      setIsModalOpen(false);
+      getTransportAll();
+    }}
+  />
+)}
+
+
+
+
+
       </div>
     </div>
   );
