@@ -65,11 +65,11 @@ export async function deleteTransport(id: number) {
   console.log('Transport deleted:', id);
 };
 
-export async function updateTransport(transportData : any) {
+export async function updateTransport(id: number, transportData : any) {
 
   console.log('Sending email content :', transportData);
   try {
-    const res = await fetch(`${baseUrl}/api/TransportEntryApi/update`, {
+    const res = await fetch(`${baseUrl}/api/TransportEntryApi/update/`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ transportEntry:transportData,destinationGroup : {} }),

@@ -12,6 +12,8 @@
   padding: 20px;
   border-radius: 10px;
   width: 860px;
+  /* overflow: scroll;
+  max-height:700px; */
 }
 
 .modal input {

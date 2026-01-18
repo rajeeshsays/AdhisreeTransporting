@@ -10,6 +10,7 @@ export default function TransportListPage() {
   const [transportList, setTransportList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransport, setSelectedTransport] = useState<any | null>(null);
+  const [operationMode , setOperationMode] = useState('');
 
 
   useEffect(() => {
@@ -33,12 +34,14 @@ export default function TransportListPage() {
 const handleAdd = () => {
   setSelectedTransport(null);
   setIsModalOpen(true);
+  setOperationMode('Add');
 };
 
 const handleEdit = (transport: any) => {
   console.log('Editing transport:', transport);
   setSelectedTransport(transport);
   setIsModalOpen(true);
+  setOperationMode('Edit');
 };
 
 const handleDelete = async (id: number) => {
@@ -48,6 +51,29 @@ const handleDelete = async (id: number) => {
   setTransportList(prev => prev.filter(t => t.id !== id));
 };
 
+const handleSave = async () => {
+  try {
+    const response = selectedTransport.id
+      ? await updateTransport(selectedTransport.id, selectedTransport)
+      : await createTransport(selectedTransport);
+
+    if (response.ok) {
+      const savedTransport = await response.json();
+      setTransportList(prev => {
+        const existingIndex = prev.findIndex(t => t.id === savedTransport.id);
+        if (existingIndex !== -1) {
+          const updatedList = [...prev];
+          updatedList[existingIndex] = savedTransport;
+          return updatedList;
+        } else {
+          return [...prev, savedTransport];
+        }
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 
 
@@ -122,8 +148,10 @@ const handleDelete = async (id: number) => {
   <TransportEntryForm
     transport={selectedTransport}
     onClose={() => setIsModalOpen(false)}
+    operationMode={operationMode}
     onSave={() => {
       setIsModalOpen(false);
+      handleSave();
       getTransportAll();
     }}
   />
