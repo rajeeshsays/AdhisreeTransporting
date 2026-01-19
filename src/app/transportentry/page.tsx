@@ -77,8 +77,6 @@ const [loading, setLoading] = useState(true);
     type: "multiselect",
     label: "Party 2",
     options: party2GroupOptions,
-      
-    
   },
   { name: "from", type: "select", label: "From", options: locationOptions },
   { name: "to", type: "select", label: "To", options: locationOptions },
