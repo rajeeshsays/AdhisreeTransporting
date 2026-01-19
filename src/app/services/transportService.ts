@@ -69,10 +69,10 @@ export async function updateTransport(id: number, transportData : any) {
 
   console.log('Sending email content :', transportData);
   try {
-    const res = await fetch(`${baseUrl}/api/TransportEntryApi/update/`, {
+    const res = await fetch(`${baseUrl}/api/TransportEntryApi/update/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transportEntry:transportData,destinationGroup : {} }),
+      body: JSON.stringify({ model:transportData}),
     });
 
     const contentType = res.headers.get('content-type');
