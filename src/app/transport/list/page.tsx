@@ -28,9 +28,6 @@ export default function TransportListPage() {
     fetchTransportList();
   }, []);
 
-
-
-
 const handleAdd = () => {
   setSelectedTransport(null);
   setIsModalOpen(true);
@@ -53,7 +50,7 @@ const handleDelete = async (id: number) => {
 
 const handleSave = async () => {
   try {
-    const response = selectedTransport.id
+    const response = selectedTransport?.id
       ? await updateTransport(selectedTransport.id, selectedTransport)
       : await createTransport(selectedTransport);
 
