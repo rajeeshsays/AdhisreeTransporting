@@ -1,15 +1,24 @@
 import { baseUrl } from '../configs/apiConfig';
-import {LocationFormData } from '../types/types';
+import { DistrictFormData } from '../types/types';
 
-
-
-
-
-export async function getLocation() {
-  console.log('Reached get location :');
+  interface DriverFormData  {
+    name: String,
+    age: String,
+    dob: String,
+    adhaarNo: String,
+    addressLine1: String,
+    addressLine2: String,
+    mobile1: String,
+    mobile2: String,
+    licenseNo: String,
+    isActive: String,
+    
+  }
+export async function getState() {
+  console.log('Reached get state :');
   try {
-    console.log("Calling:", `${baseUrl}/api/LocationApi/getlocation`);
-    const res = await fetch(`${baseUrl}/api/LocationApi/getlocation`, {
+    console.log("Calling:", `${baseUrl}/api/UtilityApi/getState`);
+    const res = await fetch(`${baseUrl}/api/UtilityApi/getState`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -21,19 +30,14 @@ export async function getLocation() {
     throw ex; // optional
   }
 }
-
-
-
-export async function getLocationAll(pageNumber: number, pageSize: number) {
-  console.log('Reached get location :');
-
+export async function getDistrict(stateId : number) {
+  console.log('Reached get district :');
   try {
-    console.log("Calling:", `${baseUrl}/api/LocationApi/getall/${pageNumber}/${pageSize}`);
-    const res = await fetch(`${baseUrl}/api/LocationApi/getall/${pageNumber}/${pageSize}`, {
+    console.log("Calling:", `${baseUrl}/api/UtilityApi/getDistricts/${stateId}`);
+    const res = await fetch(`${baseUrl}/api/UtilityApi/getDistricts/${stateId}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-
 
     return res; // <-- FIX
   } 
@@ -42,17 +46,16 @@ export async function getLocationAll(pageNumber: number, pageSize: number) {
     throw ex; // optional
   }
 }
-
-export async function createLocation(locationFormData : LocationFormData) {
-  console.log('Reached create location :'+ JSON.stringify(locationFormData));
-  locationFormData.id = "0";
+export async function createDistrict(driverFormData : DistrictFormData) {
+  console.log('Reached create district :'+ JSON.stringify(driverFormData));
+  driverFormData.id = "0";
 
   try {
-    console.log("Calling:", `${baseUrl}/api/LocationApi`);
-    const res = await fetch(`${baseUrl}/api/LocationApi`, {
+    console.log("Calling:", `${baseUrl}/api/UtilityApi/create`);
+    const res = await fetch(`${baseUrl}/api/UtilityApi/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(locationFormData),
+      body: JSON.stringify(driverFormData),
     });
 
     return res; // <-- FIX
@@ -62,25 +65,24 @@ export async function createLocation(locationFormData : LocationFormData) {
     throw ex; // optional
   }
 }
-export async function deleteLocation(id: number) {
+export async function deleteDistrict(id: number) {
   if (!window.confirm('Are you sure?')) return;
 
-  await fetch(`${baseUrl}/api/LocationApi/${id}`, {
+  await fetch(`${baseUrl}/api/UtilityApi/${id}`, {
     method: 'DELETE'
   });
-  console.log('Location deleted:', id);
+  console.log('District deleted:', id);
 };
 
-export async function updateLocation(id: number, locationData : LocationFormData) {
+export async function updateDistrict(id: number, districtData : DistrictFormData) {
 
 
-
-  console.log('inside updateLocation ...Sending email content :', locationData);
+  console.log('inside updateDistrict ...Sending email content :', districtData);
   try {
-    const res = await fetch(`${baseUrl}/api/LocationApi/${id}`, {
+    const res = await fetch(`${baseUrl}/api/UtilityApi/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(locationData),
+      body: JSON.stringify(districtData),
     });
 
     const contentType = res.headers.get('content-type');
@@ -112,7 +114,7 @@ export async function parseContent(content : any) {
 
   console.log('Sending email content :', content);
   try {
-    const res = await fetch(`${baseUrl}/api/LocationApi`, {
+    const res = await fetch(`${baseUrl}/api/DriverApi`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content }),

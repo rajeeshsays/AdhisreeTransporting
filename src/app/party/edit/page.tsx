@@ -1,32 +1,35 @@
 'use client'
 
 import React, { useState } from "react";
-import  './driverEdit.css';
+import  './partyEdit.css';
 import Select from 'react-select';
-import { DriverFormData } from "@/app/types/types";
-import styles from "./driver.module.css";
+import { PartyFormData } from "@/app/types/types";
+import styles from "./party.module.css";
 
-export default function DriverEntryForm({driver, onClose, onSave,operationMode})  {
+export default function PartyEntryForm({party, onClose, onSave,onDelete,operationMode})  {
   
-
-
-  let driverData = {
-    name: "",
-    age: "",
-    dob: "",
-    adhaarNo: "",
-    addressLine1: "",
-    addressLine2: "",
-    mobile1: "",
-    mobile2: "",
-    licenseNo: "",
-    isActive: "true",
-
+  let partyData : PartyFormData = {
+    id: party?.id || "",
+    name: party?.name || "",
+    code : party?.code || "",
+    gstNo : party?.gstNo || "",
+    addressLine1: party?.addressLine1 || "",
+    addressLine2: party?.addressLine2 || "",
+    mobile: party?.mobile || "",
+    officePhone : party?.officePhone || "",
+    email: party?.email || "",
+    contactPerson : party?.contactPerson || "",
+    pincode: party?.pincode || "",
+    accountId: party?.accountId || "",  
+    isActive: party?.isActive || "true",
   }
-  const [formData, setFormData] = useState(driverData as DriverFormData);
+
+  const [formData, setFormData] = useState<PartyFormData>(partyData);
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Form data---->>>",formData);
+    console.log("Changing field:", name, "to value:", value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -37,6 +40,11 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
     { value: 'true', label: 'Active' },
     { value: 'false', label: 'Inactive' },
   ];
+
+  const handleDelete = () => {
+    console.log("Deleting party...", formData.id);
+    onDelete(formData.id);
+  }
 
   const handleClose = () => {
   console.log("Closing form...");
@@ -55,25 +63,22 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
     e.preventDefault();
     console.log("Saving form data...", formData);
     if(operationMode === 'Edit'){
-      console.log("Updating transport entry..."+formData.id);
+      console.log("Updating party entry..."+formData.id);
       onSave(formData.id,formData);
   
     } else {
-      console.log("Creating new transport entry...");
-      onSave(formData);
+      console.log("Creating new party entry..."+formData.name);
+      onSave(0,formData);
     }
     };
     return (
      <div className={styles.overlay}>
         <div className={styles.modal}>
 
-  <form onSubmit = {handleSave} className="driver-form">
-            <h2>Driver Entry Form</h2>
+    <form onSubmit = {handleSave} className="party-form">
+            <h2>party Entry Form</h2>
 
-             <div className="form-grid">
-
-  
-
+    <div className="form-grid">
       <div>
         <label>Name:</label>
         <input
@@ -85,30 +90,31 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
         />
       </div>
 
-    
-
       <div>
-        <label>Date of Birth:</label>
-        <input
-          type="date"
-          name="dob"
-          value={formData.dob}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Adhaar no</label>
+        <label>Code:</label>
         <input
           type="text"
-          name="dob"
-          value={formData.adhaarNo}
+          name="code"
+          value={formData.code}
           onChange={handleChange}
           required
         />
-
-
       </div>
+    
+
+
+      <div>
+        <label>GST No:</label>
+        <input
+          type="text"
+          name="gstNo"
+          value={formData.gstNo}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      
 
       <div>
         <label>Address Line 1</label>
@@ -135,37 +141,51 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
 
         
       </div>
-      <div>
-        <label>Mobile 1</label>
+            <div>
+        <label>Pincode</label>
         <input
           type="text"
-          name="mobile1"
-          value={formData.mobile1}
+          name="pincode"
+          value={formData.pincode}
+          onChange={handleChange}
+          required
+        />
+
+        
+      </div>
+
+      <div>
+        <label>Mobile</label>
+        <input
+          type="text"
+          name="mobile"
+          value={formData.mobile}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label>Mobile 2</label>
+        <label>Office Phone</label>
         <input
           type="text"
-          name="mobile2"
-          value={formData.mobile2}
+          name="officePhone"
+          value={formData.officePhone}
           onChange={handleChange}
           required
         />
       </div>
+  <div>
+        <label>Contact Person</label>
+        <input
+          type="text"
+          name="contactPerson"
+          value={formData.contactPerson}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
       <div>
-        <label>License No</label>
-        <input
-          type="text"
-          name="licenseNo"
-          value={formData.licenseNo}
-          onChange={handleChange}
-          required
-        />
-      </div>
-<div>
   <label>Is Active</label>
   <Select
     name="isActive"
@@ -177,8 +197,8 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
 
   
   </Select>
-</div>
       </div>
+      
       <div className="form-actions">
           <button type="button" onClick={handleClose}>
             Cancel
@@ -187,12 +207,13 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
             Submit
           </button>
       </div>
+       
+
+    </div>
     </form>
     </div>
     </div>
-    
   );
-
 }
 
 

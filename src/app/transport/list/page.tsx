@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getTransportAll, createTransport, updateTransport,deleteTransport} from "@/app/services/transportService";
 import styles from "./transportList.module.css";
 import TransportEntryForm from "../edit/page";
-import { TransportEntryFormData } from "@/app/types/types";
+import { PartyFormData, TransportEntryFormData } from "@/app/types/types";
 
 
 export default function TransportListPage() {
@@ -87,7 +87,7 @@ const handleSave = async (id : number,formData : TransportEntryFormData) => {
 
       <div className={styles.tableWrapper}>
         <button className={styles.addBtn} onClick={handleAdd}>
-  + Add Transport
+  + Add Location
 </button>
         <table className={styles.table}>
           <thead>

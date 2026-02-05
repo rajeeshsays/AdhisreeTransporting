@@ -119,14 +119,6 @@ export async function updateDriver(id: number, driverData : DriverFormData,) {
   }
 }
 
-
-
-
-
-
-
-
-
 export async function parseContent(content : any) {
 
   console.log('Sending email content :', content);

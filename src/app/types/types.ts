@@ -1,3 +1,5 @@
+import { off } from "process";
+
 export type TransportEntryFormData = {
   id: string;
   date: string;
@@ -17,7 +19,7 @@ export type TransportEntryFormData = {
   unloadingCommision: string;
 };
 
-  export interface DriverFormData  {
+  export type DriverFormData =   {
     name: String,
     age: String,
     dob: String,
@@ -29,4 +31,47 @@ export type TransportEntryFormData = {
     licenseNo: String,
     isActive: String,
     
+  };
+
+  export type LocationFormData = {
+    id :String,
+    name: String,
+    code: String,
+    description: String,
+    districtId : String,
+    isActive: String,
+    
   }
+
+  export type PartyFormData  = {
+
+    id : String,
+    name : String,
+    code : String,
+    gstNo : String,
+    addressLine1 : String,
+    addressLine2 : String,
+    mobile : String,
+    email : String,
+    officePhone : String,
+    contactPerson : String,
+    pincode : String,
+    accountId : String,
+    isActive : String,
+  } 
+
+  export type DistrictFormData  = {
+    name: String,
+    code: String,
+    stateId: String,
+    isActive: String,
+  }
+
+
+  export type StateFormData  = {
+    name: String,
+    code: String,
+    isActive: String,
+  }
+
+  
