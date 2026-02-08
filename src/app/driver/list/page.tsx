@@ -37,9 +37,17 @@ const handleAdd = () => {
 const handleEdit = (driver: any) => {
   console.log('Editing driver:', driver);
   setSelectedDriver(driver);
-  setIsModalOpen(true);
   setOperationMode('Edit');
 };
+
+useEffect(()=>{
+if(operationMode=='Edit')
+{
+ setIsModalOpen(true);
+}
+},[selectedDriver])
+
+
 
 const handleDelete = async (id: number) => {
   if (!confirm("Are you sure you want to delete this driver?")) return;

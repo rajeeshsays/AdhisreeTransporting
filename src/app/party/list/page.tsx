@@ -44,9 +44,14 @@ const handleAdd = () => {
 const handleEdit = (party: any) => {
   console.log('Editing party:', party);
   setSelectedParty(party);
-  setIsModalOpen(true);
+  setIsModalOpen(true)
   setOperationMode('Edit');
 };
+
+useEffect(()=>{
+
+},[selectedParty])
+
 
 const handleDelete = async (id: number) => {
   if (!confirm("Are you sure you want to delete this party?")) return;

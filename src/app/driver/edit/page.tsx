@@ -23,7 +23,7 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
     isActive: "true",
 
   }
-  const [formData, setFormData] = useState(driverData as DriverFormData);
+  const [formData, setFormData] = useState<DriverFormData>(driver || driverData);
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,8 +34,8 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
   };
 
   const actives = [
-    { value: 'true', label: 'Active' },
-    { value: 'false', label: 'Inactive' },
+    { value: true, label: 'Active' },
+    { value: false, label: 'Inactive' },
   ];
 
   const handleClose = () => {
@@ -167,6 +167,7 @@ export default function DriverEntryForm({driver, onClose, onSave,operationMode})
       </div>
 <div>
   <label>Is Active</label>
+  
   <Select
     name="isActive"
     value={actives.find(option => option.value === formData.isActive)}

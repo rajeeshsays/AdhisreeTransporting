@@ -9,22 +9,22 @@ import styles from "./party.module.css";
 export default function PartyEntryForm({party, onClose, onSave,onDelete,operationMode})  {
   
   let partyData : PartyFormData = {
-    id: party?.id || "",
-    name: party?.name || "",
-    code : party?.code || "",
-    gstNo : party?.gstNo || "",
-    addressLine1: party?.addressLine1 || "",
-    addressLine2: party?.addressLine2 || "",
-    mobile: party?.mobile || "",
-    officePhone : party?.officePhone || "",
-    email: party?.email || "",
-    contactPerson : party?.contactPerson || "",
-    pincode: party?.pincode || "",
-    accountId: party?.accountId || "",  
-    isActive: party?.isActive || "true",
+    id:  "",
+    name: "",
+    code : "",
+    gstNo : "",
+    addressLine1:  "",
+    addressLine2: "",
+    mobile: "",
+    officePhone :  "",
+    email:  "",
+    contactPerson : "",
+    pincode: "",
+    accountId: "",  
+    isActive:"true"
   }
 
-  const [formData, setFormData] = useState<PartyFormData>(partyData);
+  const [formData, setFormData] = useState<PartyFormData>(party || partyData);
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,8 +37,8 @@ export default function PartyEntryForm({party, onClose, onSave,onDelete,operatio
   };
 
   const actives = [
-    { value: 'true', label: 'Active' },
-    { value: 'false', label: 'Inactive' },
+    { value: true, label: 'Active' },
+    { value: false, label: 'Inactive' },
   ];
 
   const handleDelete = () => {
@@ -52,12 +52,13 @@ export default function PartyEntryForm({party, onClose, onSave,onDelete,operatio
 }
 
 
-  const changeActives = () => {
-   setFormData(prevData => ({
-        ...prevData,
-        isActive: prevData.isActive === "true" ? "false" : "true"
-      }));
-  }
+const handleSelectChange = (name: string) => (selected: any) => {
+  setFormData((prev: any) => ({
+    ...prev,
+    [name]: selected?.value ?? null,
+      
+  }));
+};
   const handleSave = async (e: React.FormEvent) => {
   
     e.preventDefault();
@@ -187,10 +188,11 @@ export default function PartyEntryForm({party, onClose, onSave,onDelete,operatio
 
       <div>
   <label>Is Active</label>
+  <pre>{formData.isActive}</pre>
   <Select
     name="isActive"
     value={actives.find(option => option.value === formData.isActive)}
-    onChange={changeActives}
+    onChange={handleSelectChange("isActive")}
     options={actives}
     required
   >
