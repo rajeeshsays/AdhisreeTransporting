@@ -1,20 +1,20 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
-import  './vehicleEdit.css';
+import React, { useState } from "react";
+import  './vehicleTypeEdit.css';
 import Select from 'react-select';
-import { VehicleFormData } from "@/app/types/types";
-import styles from "./vehicle.module.css";
-export default function VehicleEntryForm({vehicle, onClose, onSave,onDelete,operationMode})  {
+import { VehicleTypeFormData } from "@/app/types/types";
+import styles from "./vehicleType.module.css";
+
+export default function VehicleTypeEntryForm({vehicleType, onClose, onSave,onDelete,operationMode})  {
   
-  let vehicleData : VehicleFormData = {
-         id : 0,     
-         model : "", 
-         registration : "",
-         typeId : 0,
-         isActive : true
+  let vehicleTypeData : VehicleTypeFormData = {
+        id : 0,
+        desc : "",
+        isActive : true,
   }
-  const [formData, setFormData] = useState<VehicleFormData>(vehicle || vehicleData);
+
+  const [formData, setFormData] = useState<VehicleTypeFormData>(vehicleType || vehicleTypeData);
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,20 +26,13 @@ export default function VehicleEntryForm({vehicle, onClose, onSave,onDelete,oper
     }));
   };
 
-  useEffect(()=>
-  {
-
-  })
-
-
-
   const actives = [
     { value: true, label: 'Active' },
     { value: false, label: 'Inactive' },
   ];
 
   const handleDelete = () => {
-    console.log("Deleting party...", formData.id);
+    console.log("Deleting vehicleType...", formData.id);
     onDelete(formData.id);
   }
 
@@ -61,11 +54,11 @@ const handleSelectChange = (name: string) => (selected: any) => {
     e.preventDefault();
     console.log("Saving form data...", formData);
     if(operationMode === 'Edit'){
-      console.log("Updating party entry..."+formData.id);
+      console.log("Updating vehicleType entry..."+formData.id);
       onSave(formData.id,formData);
   
     } else {
-      console.log("Creating new party entry..."+formData.name);
+      console.log("Creating new vehicleType entry..."+formData.desc);
       onSave(0,formData);
     }
     };
@@ -73,43 +66,23 @@ const handleSelectChange = (name: string) => (selected: any) => {
      <div className={styles.overlay}>
         <div className={styles.modal}>
 
-    <form onSubmit = {handleSave} className="vehicle-form">
-            <h2>Vehicle Entry Form</h2>
+    <form onSubmit = {handleSave} className="vehicleType-form">
+            <h2>Vehicle Type Entry Form</h2>
 
     <div className="form-grid">
       <div>
-        <label>Model:</label>
+        <label>Name:</label>
         <input
           type="text"
-          name="name"
-          value={formData.model}
+          name="desc"
+          value={formData.desc}
           onChange={handleChange}
           required
         />
       </div>
-
-      <div>
-        <label>Registration:</label>
-        <input
-          type="text"
-          name="code"
-          value={formData.registration}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-  <label>Vehicle Type</label>
-  
-  <Select
-    name="typeId"
-    value={actives.find(option => option.value === formData.isActive)}
-    onChange={handleSelectChange("typeId")}
-    options={actives}
-    required
-  >
-  </Select>
-    
+  <div>
+  <label>Is Active</label>
+  <pre>{formData.isActive}</pre>
   <Select
     name="isActive"
     value={actives.find(option => option.value === formData.isActive)}
@@ -117,8 +90,9 @@ const handleSelectChange = (name: string) => (selected: any) => {
     options={actives}
     required
   >
-  </Select>
 
+  
+  </Select>
       </div>
       
       <div className="form-actions">

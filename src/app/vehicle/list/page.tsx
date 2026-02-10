@@ -1,27 +1,26 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./partyList.module.css";
-import { PartyFormData } from "@/app/types/types";
-import { createParty, deleteParty, getPartyAll, updateParty } from "@/app/services/partyService";
-import PartyEntryForm from "../edit/page";
+import styles from "./vehicleList.module.css";
+import { VehicleFormData } from "@/app/types/types";
+import { createVehicle, deleteVehicle, getVehicleAll, updateVehicle } from "@/app/services/vehicleService";
+import VehicleEntryForm from "../edit/page";
 
-export default function PartyListPage() {
-  const [partyList, setPartyList] = useState<any[]>([]);
+export default function VehicleListPage() {
+  const [vehicleList, setVehicleList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedParty, setSelectedParty] = useState<any | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<any | null>(null);
   const [operationMode , setOperationMode] = useState('');
   
-
   useEffect(() => {
-    async function fetchPartyList() {
+    async function fetchVehicleList() {
       let isMounted = true;
       try {
-        const response = await getPartyAll(1,100);
+        const response = await getVehicleAll(1,100);
         if (response.ok) {
           const data = await response.json();
           if (isMounted) {
-            setPartyList(data);
+            setVehicleList(data);
           }
         }
 
@@ -32,56 +31,56 @@ export default function PartyListPage() {
         isMounted = false;
       }
     }
-    fetchPartyList();
+    fetchVehicleList();
   }, []);
 
 const handleAdd = () => {
-  setSelectedParty(null);
+  setSelectedVehicle(null);
   setIsModalOpen(true);
   setOperationMode('Add');
 };
 
-const handleEdit = (party: any) => {
-  console.log('Editing party:', party);
-  setSelectedParty(party);
+const handleEdit = (vehicle: any) => {
+  console.log('Editing vehicle:', vehicle);
+  setSelectedVehicle(vehicle);
   setIsModalOpen(true)
   setOperationMode('Edit');
 };
 
 useEffect(()=>{
 
-},[selectedParty])
+},[selectedVehicle])
 
 
 const handleDelete = async (id: number) => {
-  if (!confirm("Are you sure you want to delete this party?")) return;
+  if (!confirm("Are you sure you want to delete this vehicle?")) return;
 
-  await deleteParty(id);
-  setPartyList(prev => prev.filter(t => t.id !== id));
+  await deleteVehicle(id);
+  setVehicleList(prev => prev.filter(t => t.id !== id));
   
 };
 
 
-const handleSave = async (id : number,formData : PartyFormData) => {
+const handleSave = async (id : number,formData : VehicleFormData) => {
   try {
 
   console.log("formdata te list " +formData)
 
    //const response =  await createTransport(formData);
-    const response = selectedParty?.id
-      ? await updateParty(selectedParty.id, formData)
-      : await createParty(formData);
+    const response = selectedVehicle?.id
+      ? await updateVehicle(selectedVehicle.id, formData)
+      : await createVehicle(formData);
 
     if (response.ok) {
-      const savedParty = await response.json();
-      setPartyList(prev => {
-        const existingIndex = prev.findIndex(t => t.id === savedParty.id);
+      const savedVehicle = await response.json();
+      setVehicleList(prev => {
+        const existingIndex = prev.findIndex(t => t.id === savedVehicle.id);
         if (existingIndex !== -1) {
           const updatedList = [...prev];
-          updatedList[existingIndex] = savedParty;
+          updatedList[existingIndex] = savedVehicle;
           return updatedList;
         } else {
-          return [...prev, savedParty];
+          return [...prev, savedVehicle];
         }
       });
     }
@@ -93,23 +92,20 @@ const handleSave = async (id : number,formData : PartyFormData) => {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>🚚 Party List</h1>
+      <h1 className={styles.title}>🚚 Vehicle List</h1>
 
       <div className={styles.tableWrapper}>
         <button className={styles.addBtn} onClick={handleAdd}>
-  + Add Party
+  + Add Vehicle
 </button>
 {/* <pre>{JSON.stringify(driverList, null, 2) }</pre> */}
         <table className={styles.table}>
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Adhaar No</th>
-              <th>Mobile 1</th>
-              <th>Mobile 2</th>
-              <th>License No</th>
+              <th>Registration</th>
+              <th>Model</th>
+           
               <th>Is Active</th>
               <th>Actions</th>
             </tr>
@@ -117,39 +113,36 @@ const handleSave = async (id : number,formData : PartyFormData) => {
 
           <tbody>
             {
-            partyList.length === 0 ? (
+            vehicleList.length === 0 ? (
               <tr>
                 <td colSpan={8} className={styles.empty}>
-                  No party records found
+                  No vehicle records found
                 </td>
               </tr>
            ) : (
-             partyList.map((party) => ( 
+             vehicleList.map((vehicle) => ( 
 
-                 <tr key={party.id}>
+                 <tr key={vehicle.id}>
                      
-                  <td>{party.id}</td>
-                   <td>{party.name}</td>
-                   <td>{party.age}</td>
-                   <td>{party.adhaarNo}</td>
-                   <td>{party.mobile1}</td>
-                   <td>{party.mobile2}</td>
-                   <td>{party.licenseNo}</td>
-                   <td className={party.isActive === "1" ? styles.active : styles.inactive}>
-                     {party.isActive ? "Active" : "Inactive"}                    
+                  <td>{vehicle.id}</td>
+                   <td>{vehicle.registration}</td>
+                   <td>{vehicle.model}</td>
+                
+                   <td className={vehicle.isActive === "1" ? styles.active : styles.inactive}>
+                     {vehicle.isActive ? "Active" : "Inactive"}                    
                    
                     </td>
                     <td>
 <button
 className={styles.editBtn}
-onClick={() => handleEdit(party)}
+onClick={() => handleEdit(vehicle)}
    >
      Edit
    </button>
 
    <button
      className={styles.deleteBtn}
-     onClick={() => handleDelete(party.id)}
+     onClick={() => handleDelete(vehicle.id)}
    >
      Delete
    </button></td>
@@ -163,20 +156,20 @@ onClick={() => handleEdit(party)}
         </table>
 
  {isModalOpen && (
-   <PartyEntryForm
-     party={selectedParty}
+   <VehicleEntryForm
+     vehicle={selectedVehicle}
      onClose={() => setIsModalOpen(false)}
      operationMode={operationMode}
      onSave={(id : number,formData : any) => {
-       console.log("Saving party entry with id:", id, "and data:", formData);
+       console.log("Saving vehicle entry with id:", id, "and data:", formData);
        setIsModalOpen(false);
        handleSave(id, formData);
-       getPartyAll(1,100);
+       getVehicleAll(1,100);
      }}
      onDelete={(id : number) => {
        setIsModalOpen(false);
-       deleteParty(id);
-       getPartyAll(1,100);
+       deleteVehicle(id);
+       getVehicleAll(1,100);
      }}
      />
    

@@ -1,13 +1,13 @@
 import { baseUrl } from '../configs/apiConfig';
-import { DriverFormData } from '../types/types';
+import { VehicleFormData } from '../types/types';
 
 
 
-export async function getDriver() {
-  console.log('Reached get driver :');
+export async function getVehicle() {
+  console.log('Reached get vehicle :');
   try {
-    console.log("Calling:", `${baseUrl}/api/DriverApi/getdriver`);
-    const res = await fetch(`${baseUrl}/api/DriverApi/getdriver`, {
+    console.log("Calling:", `${baseUrl}/api/VehicleApi/getVehicle`);
+    const res = await fetch(`${baseUrl}/api/VehicleApi/getVehicle`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -22,12 +22,12 @@ export async function getDriver() {
 
 
 
-export async function getDriverAll(pageNumber: number, pageSize: number) {
-  console.log('Reached get driver :');
+export async function getVehicleAll(pageNumber: number, pageSize: number) {
+  console.log('Reached get vehicle :');
 
   try {
-    console.log("Calling:", `${baseUrl}/api/DriverApi/getall/${pageNumber}/${pageSize}`);
-    const res = await fetch(`${baseUrl}/api/DriverApi/getall/${pageNumber}/${pageSize}`, {
+    console.log("Calling:", `${baseUrl}/api/VehicleApi/getall/${pageNumber}/${pageSize}`);
+    const res = await fetch(`${baseUrl}/api/VehicleApi/getall/${pageNumber}/${pageSize}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -41,16 +41,16 @@ export async function getDriverAll(pageNumber: number, pageSize: number) {
   }
 }
 
-export async function createDriver(driverFormData : DriverFormData) {
-  console.log('Reached create driver :'+ JSON.stringify(driverFormData));
-  driverFormData.id = "0";
+export async function createVehicle(vehicleFormData : VehicleFormData) {
+  console.log('Reached create vehicle :'+ JSON.stringify(vehicleFormData));
+  vehicleFormData.id = 0;
 
   try {
-    console.log("Calling:", `${baseUrl}/api/DriverApi/create`);
-    const res = await fetch(`${baseUrl}/api/DriverApi/create`, {
+    console.log("Calling:", `${baseUrl}/api/VehicleApi/create`);
+    const res = await fetch(`${baseUrl}/api/VehicleApi/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(driverFormData),
+      body: JSON.stringify(vehicleFormData),
     });
 
     return res; // <-- FIX
@@ -61,12 +61,12 @@ export async function createDriver(driverFormData : DriverFormData) {
   }
 }
 
-export async function deleteDriver(id: number) {
+export async function deleteVehicle(id: number) {
 
-  const response = await fetch(`${baseUrl}/api/DriverApi/${id}`, {
+  const response = await fetch(`${baseUrl}/api/VehicleApi/${id}`, {
     method: 'DELETE'
   });
-  console.log('Driver deleted:', id);
+  console.log('Vehicle deleted:', id);
 
 
     if (!response.ok) {
@@ -90,16 +90,16 @@ export async function deleteDriver(id: number) {
   throw { status: response.status, message, detail };
   }
   // 204 No Content → nothing to return
-  console.log('Driver deleted:', id);
+  console.log('Vehicle deleted:', id);
 };
 
-export async function updateDriver(id: number, driverData : DriverFormData,) {
-console.log('inside updateDriver ...Sending email content :', driverData);
+export async function updateVehicle(id: number, vehicleData : VehicleFormData,) {
+console.log('inside updateVehicle ...Sending email content :', vehicleData);
   try {
-    const res = await fetch(`${baseUrl}/api/DriverApi/${id}`, {
+    const res = await fetch(`${baseUrl}/api/VehicleApi/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(driverData),
+      body: JSON.stringify(vehicleData),
     });
 
     const contentType = res.headers.get('content-type');
@@ -131,7 +131,7 @@ export async function parseContent(content : any) {
 
   console.log('Sending email content :', content);
   try {
-    const res = await fetch(`${baseUrl}/api/DriverApi`, {
+    const res = await fetch(`${baseUrl}/api/VehicleApi`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content }),

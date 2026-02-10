@@ -75,25 +75,18 @@ export type TransportEntryFormData = {
     isActive: string,
   }
 
- export type Vehicle  = 
-    {
-        
-         id : number,
-       
+
+   export type VehicleFormData  = {
+         id : number,     
          model : string, 
-        
-        registration : string,
-
-        typeId : number
-
+         registration : string,
+         typeId : number,
+         isActive : boolean
     }
 
-    export type  VehicleType = 
-    {
-        id : string,
-     
+    export type  VehicleTypeFormData = {
+        id : number,
         desc : string,
-
-        accountId : number
+        isActive : boolean,
 
     }

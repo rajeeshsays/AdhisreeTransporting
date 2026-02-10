@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./vehicleTypeList.module.css";
-import { PartyFormData } from "@/app/types/types";
-import { createParty, deleteParty, getPartyAll, updateParty } from "@/app/services/vehicleTypeService";
+import { PartyFormData, VehicleTypeFormData } from "@/app/types/types";
+import { createVehicleType, deleteVehicleType, getVehicleTypeAll, updateVehicleType } from "@/app/services/vehicleTypeService";
 import VehicleTypeEntryForm from "../edit/page";
 
 export default function VehcileListPage() {
   const [partyList, setVehicleTypeList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedParty, setSelectedVehicleType] = useState<any | null>(null);
+  const [selectedVehicleType, setSelectedVehicleType] = useState<any | null>(null);
   const [operationMode , setOperationMode] = useState('');
   
 
@@ -17,7 +17,7 @@ export default function VehcileListPage() {
     async function fetchVehicleTypeList() {
       let isMounted = true;
       try {
-        const response = await getPartyAll(1,100);
+        const response = await getVehicleTypeAll(1,100);
         if (response.ok) {
           const data = await response.json();
           if (isMounted) {
@@ -50,7 +50,7 @@ const handleEdit = (party: any) => {
 
 useEffect(()=>{
 
-},[selectedParty])
+},[selectedVehicleType])
 
 
 const handleDelete = async (id: number) => {
@@ -62,7 +62,7 @@ const handleDelete = async (id: number) => {
 };
 
 
-const handleSave = async (id : number,formData : PartyFormData) => {
+const handleSave = async (id : number,formData : VehicleTypeFormData) => {
   try {
 
   console.log("formdata te list " +formData)
@@ -93,23 +93,18 @@ const handleSave = async (id : number,formData : PartyFormData) => {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>🚚 Party List</h1>
+      <h1 className={styles.title}>🚚 Vehicle Type List</h1>
 
       <div className={styles.tableWrapper}>
         <button className={styles.addBtn} onClick={handleAdd}>
-  + Add Party
+  + Add Vehicle Type
 </button>
 {/* <pre>{JSON.stringify(driverList, null, 2) }</pre> */}
         <table className={styles.table}>
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Adhaar No</th>
-              <th>Mobile 1</th>
-              <th>Mobile 2</th>
-              <th>License No</th>
+              <th>Desc</th>
               <th>Is Active</th>
               <th>Actions</th>
             </tr>
@@ -129,12 +124,7 @@ const handleSave = async (id : number,formData : PartyFormData) => {
                  <tr key={party.id}>
                      
                   <td>{party.id}</td>
-                   <td>{party.name}</td>
-                   <td>{party.age}</td>
-                   <td>{party.adhaarNo}</td>
-                   <td>{party.mobile1}</td>
-                   <td>{party.mobile2}</td>
-                   <td>{party.licenseNo}</td>
+                   <td>{party.desc}</td>
                    <td className={party.isActive === "1" ? styles.active : styles.inactive}>
                      {party.isActive ? "Active" : "Inactive"}                    
                    
@@ -163,20 +153,20 @@ onClick={() => handleEdit(party)}
         </table>
 
  {isModalOpen && (
-   <PartyEntryForm
-     party={selectedParty}
+   <VehicleTypeEntryForm
+     vehicleType={selectedVehicleType}
      onClose={() => setIsModalOpen(false)}
      operationMode={operationMode}
      onSave={(id : number,formData : any) => {
        console.log("Saving party entry with id:", id, "and data:", formData);
        setIsModalOpen(false);
        handleSave(id, formData);
-       getPartyAll(1,100);
+       getVehicleTypeAll(1,100);
      }}
      onDelete={(id : number) => {
        setIsModalOpen(false);
-       deleteParty(id);
-       getPartyAll(1,100);
+       deleteVehicleType(id);
+       getVehicleTypeAll(1,100);
      }}
      />
    
