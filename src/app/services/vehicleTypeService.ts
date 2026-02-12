@@ -45,8 +45,8 @@ export async function createVehicleType(vehicleTypeFormData : VehicleTypeFormDat
   vehicleTypeFormData.id = 0;
 
   try {
-    console.log("Calling:", `${baseUrl}/api/VehicleTypeApi/create`);
-    const res = await fetch(`${baseUrl}/api/VehicleTypeApi/create`, {
+    console.log("Calling:", `${baseUrl}/api/VehicleTypeApi`);
+    const res = await fetch(`${baseUrl}/api/VehicleTypeApi`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(vehicleTypeFormData),

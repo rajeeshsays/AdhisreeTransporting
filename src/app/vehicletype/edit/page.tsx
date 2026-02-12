@@ -66,7 +66,7 @@ const handleSelectChange = (name: string) => (selected: any) => {
      <div className={styles.overlay}>
         <div className={styles.modal}>
 
-    <form onSubmit = {handleSave} className="vehicleType-form">
+    <form onSubmit = {handleSave} className="vehicletype-form">
             <h2>Vehicle Type Entry Form</h2>
 
     <div className="form-grid">
@@ -89,9 +89,7 @@ const handleSelectChange = (name: string) => (selected: any) => {
     onChange={handleSelectChange("isActive")}
     options={actives}
     required
-  >
-
-  
+  >  
   </Select>
       </div>
       

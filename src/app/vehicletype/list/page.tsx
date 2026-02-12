@@ -81,7 +81,7 @@ const handleSave = async (id : number,formData : VehicleTypeFormData) => {
           updatedList[existingIndex] = savedVehicleType;
           return updatedList;
         } else {
-          return [...prev, savedParty];
+          return [...prev, savedVehicleType];
         }
       });
     }

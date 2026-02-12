@@ -34,6 +34,24 @@ export async function getDistrict(stateId : number) {
     throw ex; // optional
   }
 }
+export async function getVehicleType() {
+  console.log('Reached get vehicle type :');
+  try {
+    console.log("Calling:", `${baseUrl}/api/UtilityApi/getVehicleType`);
+    const res = await fetch(`${baseUrl}/api/UtilityApi/getVehicleType`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    return res; // <-- FIX
+  } 
+  catch (ex: any) {
+    console.log(JSON.stringify(ex));
+    throw ex; // optional
+  }
+}
+
+
 export async function createDistrict(driverFormData : DistrictFormData) {
   console.log('Reached create district :'+ JSON.stringify(driverFormData));
   driverFormData.id = "0";
