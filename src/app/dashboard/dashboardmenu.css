@@ -1,0 +1,49 @@
+/* Outer big square container */
+.dashboard-wrapper {
+  max-width: 900px;
+  margin: 100px auto;
+  padding: 40px;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  background-color: #f9fafb;
+}
+
+/* Grid layout */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+/* Light square menu card */
+.dashboard-card {
+  background-color: #1b5983;
+  color: whitesmoke;
+  height: 103px;
+  border-radius: 15px;
+  border: 1px solid #d1d5db;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover → Dark */
+.dashboard-card:hover {
+  background-color: #313f66;
+  color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
