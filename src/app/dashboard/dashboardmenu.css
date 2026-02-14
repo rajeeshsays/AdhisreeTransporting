@@ -47,3 +47,16 @@
   font-size: 18px;
   font-weight: 600;
 }
+
+
+.dashboard-head {
+  padding-top:50px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-head h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e3a8a;
+}

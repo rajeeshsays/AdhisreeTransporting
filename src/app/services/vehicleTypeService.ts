@@ -109,7 +109,7 @@ console.log('inside updateVehicle ...Sending email content :', vehicleTypeData);
 
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
 
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -144,7 +144,7 @@ export async function parseContent(content : any) {
       
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
        
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');

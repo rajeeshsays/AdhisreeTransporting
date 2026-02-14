@@ -3,11 +3,11 @@ import { DriverFormData } from '../types/types';
 
 
 
-export async function getDriver() {
+export async function getDriver(id :number) {
   console.log('Reached get driver :');
   try {
-    console.log("Calling:", `${baseUrl}/api/DriverApi/getdriver`);
-    const res = await fetch(`${baseUrl}/api/DriverApi/getdriver`, {
+    console.log("Calling:", `${baseUrl}/api/DriverApi/getdriver/${id}`);
+    const res = await fetch(`${baseUrl}/api/DriverApi/getdriver/${id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -110,7 +110,7 @@ console.log('inside updateDriver ...Sending email content :', driverData);
 
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
 
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -145,7 +145,7 @@ export async function parseContent(content : any) {
       
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
        
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');

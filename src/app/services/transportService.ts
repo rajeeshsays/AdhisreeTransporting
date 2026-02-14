@@ -89,7 +89,7 @@ export async function updateTransport(id: number, transportData : TransportEntry
 
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
 
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -124,7 +124,7 @@ export async function parseContent(content : any) {
       
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
        
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -142,7 +142,7 @@ export async function parseContent(content : any) {
   }
 
 }
-const API_URL = "https://localhost:5001/api/transport";
+
 
 
 

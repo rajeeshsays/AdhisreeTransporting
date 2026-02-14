@@ -4,13 +4,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./vehicleList.module.css";
 import { VehicleFormData } from "@/app/types/types";
 import { createVehicle, deleteVehicle, getVehicleAll, updateVehicle } from "@/app/services/vehicleService";
-import VehicleEntryForm from "../edit/page";
+import VehicleEntryForm from "@/app/components/vehicle/VehicleEntryForm";
 
-export default function VehicleListPage() {
+export default function VehicleList() {
   const [vehicleList, setVehicleList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState<any | null>(null);
-  const [operationMode , setOperationMode] = useState('');
+  const [selectedVehicleId, setSelectedVehicleId] = useState<any | null>(null);
   
   useEffect(() => {
     async function fetchVehicleList() {
@@ -35,21 +34,25 @@ export default function VehicleListPage() {
   }, []);
 
 const handleAdd = () => {
-  setSelectedVehicle(null);
+  setSelectedVehicleId(null);
   setIsModalOpen(true);
   setOperationMode('Add');
 };
 
 const handleEdit = (vehicle: any) => {
   console.log('Editing vehicle:', vehicle);
-  setSelectedVehicle(vehicle);
+  setSelectedVehicleId(vehicle.id);
   setIsModalOpen(true)
   setOperationMode('Edit');
 };
-
+  const closeModal = ()=>
+  {
+  setIsModalOpen(false);
+  selectedVehicleId(null);
+  }
 useEffect(()=>{
 
-},[selectedVehicle])
+},[selectedVehicleId])
 
 
 const handleDelete = async (id: number) => {
@@ -67,8 +70,8 @@ const handleSave = async (id : number,formData : VehicleFormData) => {
   console.log("formdata te list " +formData)
 
    //const response =  await createTransport(formData);
-    const response = selectedVehicle?.id
-      ? await updateVehicle(selectedVehicle.id, formData)
+    const response = selectedVehicleId
+      ? await updateVehicle(selectedVehicleId, formData)
       : await createVehicle(formData);
 
     if (response.ok) {
@@ -157,20 +160,8 @@ onClick={() => handleEdit(vehicle)}
 
  {isModalOpen && (
    <VehicleEntryForm
-     vehicle={selectedVehicle}
-     onClose={() => setIsModalOpen(false)}
-     operationMode={operationMode}
-     onSave={(id : number,formData : any) => {
-       console.log("Saving vehicle entry with id:", id, "and data:", formData);
-       setIsModalOpen(false);
-       handleSave(id, formData);
-       getVehicleAll(1,100);
-     }}
-     onDelete={(id : number) => {
-       setIsModalOpen(false);
-       deleteVehicle(id);
-       getVehicleAll(1,100);
-     }}
+     id={selectedVehicleId}
+     closeModal={closeModal}
      />
    
 )}

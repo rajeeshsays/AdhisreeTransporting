@@ -1,17 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getLocationAll, createLocation, updateLocation,deleteLocation} from "@/app/services/locationService";
+import { getLocationAll, deleteLocation} from "@/app/services/locationService";
 import styles from "./locationList.module.css";
-import LocationEntryForm from "../edit/page";
-import { DriverFormData, LocationFormData } from "@/app/types/types";
+import LocationEntryForm from "@/app/components/location/LocationEntryForm";
 
 
-export default function LocationListPage() {
+
+export default function LocationList() {
   const [locationList, setLocationList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
-  const [operationMode , setOperationMode] = useState('');
+  const [selectedLocationId, setSelectedLocationId] = useState<any | null>(null);
+  
+  const closeModal = ()=>
+  {
+  setIsModalOpen(false);
+  selectedLocationId(null);
+  }
 
 
   useEffect(() => {
@@ -30,16 +35,15 @@ export default function LocationListPage() {
   }, []);
 
 const handleAdd = () => {
-  setSelectedLocation(null);
+  setSelectedLocationId(null);
   setIsModalOpen(true);
-  setOperationMode('Add');
+
 };
 
 const handleEdit = (location: any) => {
   console.log('Editing location:', location);
-  setSelectedLocation(location);
+  setSelectedLocationId(location.id);
   setIsModalOpen(true);
-  setOperationMode('Edit');
 };
 
 const handleDelete = async (id: number) => {
@@ -49,35 +53,7 @@ const handleDelete = async (id: number) => {
   setLocationList(prev => prev.filter(t => t.id !== id));
 };
 
-const handleSave = async (id : number,formData : LocationFormData) => {
-  try {
 
-  
-  console.log("formdata te list " +JSON.stringify(formData))
-
-   //const response =  await createTransport(formData);
-    const response = selectedLocation?.id
-      ? await updateLocation(selectedLocation.id, formData)
-      : await createLocation(formData);
-
-    if (response.ok) {
-      const savedLocation = await response.json();
-      setLocationList(prev => {
-        const existingIndex = prev.findIndex(t => t.id === savedLocation.id);
-        
-        if (existingIndex !== -1) {
-          const updatedList = [...prev];
-          updatedList[existingIndex] = savedLocation;
-          return updatedList;
-        } else {
-          return [...prev, savedLocation];
-        }
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
 
   return (
     <div className={styles.page}>
@@ -146,19 +122,14 @@ onClick={() => handleEdit(location)}
              
         </table>
  {
-   <pre>{JSON.stringify(selectedLocation, null, 2)}</pre>
+   <pre>{JSON.stringify(selectedLocationId, null, 2)}</pre>
  }
  {isModalOpen && (
  
    <LocationEntryForm
-     location={selectedLocation}
-     onClose={() => setIsModalOpen(false)}
-     operationMode={operationMode}
-     onSave={(id : number,formData : any) => {
-       setIsModalOpen(false);
-       handleSave(id, formData);
-       getLocationAll(1,100);
-     }}
+     id={selectedLocationId}
+     closeModal = {closeModal}
+     
    />
 )}
       </div>

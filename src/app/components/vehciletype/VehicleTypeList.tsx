@@ -2,17 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./vehicleTypeList.module.css";
-import { PartyFormData, VehicleTypeFormData } from "@/app/types/types";
-import { createVehicleType, deleteVehicleType, getVehicleTypeAll, updateVehicleType } from "@/app/services/vehicleTypeService";
-import VehicleTypeEntryForm from "../edit/page";
+import {deleteVehicleType, getVehicleTypeAll} from "@/app/services/vehicleTypeService";
+import VehicleTypeEntryForm from "@/app/components/vehciletype/VehicleTypeEntryForm";
 
-export default function VehcileListPage() {
+export default function VehcileList() {
   const [partyList, setVehicleTypeList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVehicleType, setSelectedVehicleType] = useState<any | null>(null);
-  const [operationMode , setOperationMode] = useState('');
-  
+  const [selectedVehicleTypeId, setSelectedVehicleTypeId] = useState<any | null>(null);
 
+  
   useEffect(() => {
     async function fetchVehicleTypeList() {
       let isMounted = true;
@@ -36,21 +34,25 @@ export default function VehcileListPage() {
   }, []);
 
 const handleAdd = () => {
-  setSelectedVehicleType(null);
+  setSelectedVehicleTypeId(null);
   setIsModalOpen(true);
   setOperationMode('Add');
 };
 
 const handleEdit = (party: any) => {
   console.log('Editing VehicleType:', party);
-  setSelectedVehicleType(party);
+  setSelectedVehicleTypeId(party.id);
   setIsModalOpen(true)
   setOperationMode('Edit');
 };
-
+  const closeModal = ()=>
+  {
+  setIsModalOpen(false);
+  selectedVehicleTypeId(null);
+  }
 useEffect(()=>{
 
-},[selectedVehicleType])
+},[selectedVehicleTypeId])
 
 
 const handleDelete = async (id: number) => {
@@ -62,34 +64,7 @@ const handleDelete = async (id: number) => {
 };
 
 
-const handleSave = async (id : number,formData : VehicleTypeFormData) => {
-  try {
 
-  console.log("formdata te list " +formData)
-
-   //const response =  await createTransport(formData);
-    const response = selectedVehicleType?.id
-      ? await updateVehicleType(selectedVehicleType.id, formData)
-      : await createVehicleType(formData);
-
-    if (response.ok) {
-      const savedVehicleType = await response.json();
-      setVehicleTypeList(prev => {
-        const existingIndex = prev.findIndex(t => t.id === savedVehicleType.id);
-        if (existingIndex !== -1) {
-          const updatedList = [...prev];
-          updatedList[existingIndex] = savedVehicleType;
-          return updatedList;
-        } else {
-          return [...prev, savedVehicleType];
-        }
-      });
-    }
-  } catch (error) {
-    alert(error);
-    console.error(error);
-  }
-};
 
   return (
     <div className={styles.page}>
@@ -154,20 +129,8 @@ onClick={() => handleEdit(party)}
 
  {isModalOpen && (
    <VehicleTypeEntryForm
-     vehicleType={selectedVehicleType}
-     onClose={() => setIsModalOpen(false)}
-     operationMode={operationMode}
-     onSave={(id : number,formData : any) => {
-       console.log("Saving party entry with id:", id, "and data:", formData);
-       setIsModalOpen(false);
-       handleSave(id, formData);
-       getVehicleTypeAll(1,100);
-     }}
-     onDelete={(id : number) => {
-       setIsModalOpen(false);
-       deleteVehicleType(id);
-       getVehicleTypeAll(1,100);
-     }}
+     id={selectedVehicleTypeId}
+     closeModal={closeModal}
      />
    
 )}

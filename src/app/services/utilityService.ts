@@ -99,7 +99,7 @@ export async function updateDistrict(id: number, districtData : DistrictFormData
 
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
 
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -134,7 +134,7 @@ export async function parseContent(content : any) {
       
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
        
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');

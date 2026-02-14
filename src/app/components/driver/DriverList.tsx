@@ -1,15 +1,13 @@
-"use client";
-
+'use client'
 import React, { useEffect, useState } from "react";
-import { getDriverAll, createDriver, updateDriver,deleteDriver} from "@/app/services/driverService";
+import { getDriverAll, deleteDriver} from "@/app/services/driverService";
 import styles from "./driverList.module.css";
-import DriverEntryForm from "../edit/page";
-import { DriverFormData } from "@/app/types/types";
+import DriverEntryForm from "@/app/components/driver/DriverEntryForm";
 
-export default function DriverListPage() {
+export default function DriverList() {
   const [driverList, setDriverList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDriver, setSelectedDriver] = useState<any | null>(null);
+  const [selectedDriverId, setSelectedDriverId] = useState<any | null>(null);
   const [operationMode , setOperationMode] = useState('');
 
 
@@ -29,23 +27,28 @@ export default function DriverListPage() {
   }, []);
 
 const handleAdd = () => {
-  setSelectedDriver(null);
+  setSelectedDriverId(null);
   setIsModalOpen(true);
   setOperationMode('Add');
 };
 
 const handleEdit = (driver: any) => {
   console.log('Editing driver:', driver);
-  setSelectedDriver(driver);
+  setSelectedDriverId(driver.id);
   setOperationMode('Edit');
 };
 
+const closeModal = ()=>
+{
+  setIsModalOpen(true)
+  setSelectedDriverId(null);
+}
 useEffect(()=>{
-if(operationMode=='Edit')
+if(operationMode=='Edit' && selectedDriverId)
 {
  setIsModalOpen(true);
 }
-},[selectedDriver])
+},[selectedDriverId,operationMode])
 
 const handleDelete = async (id: number) => {
   if (!confirm("Are you sure you want to delete this driver?")) return;
@@ -53,40 +56,18 @@ const handleDelete = async (id: number) => {
   await deleteDriver(id);
   setDriverList(prev => prev.filter(t => t.id !== id));
   }
-  catch(error)
+  catch(error : unknown)
   {
-  alert(error.message);
-  }
-
-};
-
-const handleSave = async (id : number,formData : DriverFormData) => {
-  try {
-
-  console.log("formdata te list " +formData)
-
-   //const response =  await createTransport(formData);
-    const response = selectedDriver?.id
-      ? await updateDriver(selectedDriver.id, formData)
-      : await createDriver(formData);
-
-    if (response.ok) {
-      const savedDriver = await response.json();
-      setDriverList(prev => {
-        const existingIndex = prev.findIndex(t => t.id === savedDriver.id);
-        if (existingIndex !== -1) {
-          const updatedList = [...prev];
-          updatedList[existingIndex] = savedDriver;
-          return updatedList;
-        } else {
-          return [...prev, savedDriver];
-        }
-      });
+    if(error instanceof Error)
+    {
+      alert(error.message);
     }
-  } catch (error) {
-    console.error(error);
+  
   }
+
 };
+
+
 
   return (
     <div className={styles.page}>
@@ -161,14 +142,9 @@ onClick={() => handleEdit(driver)}
 
  {isModalOpen && (
    <DriverEntryForm
-     driver={selectedDriver}
-     onClose={() => setIsModalOpen(false)}
-     operationMode={operationMode}
-     onSave={(id : number,formData : any) => {
-       setIsModalOpen(false);
-       handleSave(id, formData);
-       getDriverAll(1,100);
-     }}
+     id={selectedDriverId}
+     closeModal = {closeModal}
+  
    />
 )}
       </div>

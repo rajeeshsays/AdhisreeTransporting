@@ -5,11 +5,11 @@ import {LocationFormData } from '../types/types';
 
 
 
-export async function getLocation() {
+export async function getLocation(id :number) {
   console.log('Reached get location :');
   try {
-    console.log("Calling:", `${baseUrl}/api/LocationApi/getlocation`);
-    const res = await fetch(`${baseUrl}/api/LocationApi/getlocation`, {
+    console.log("Calling:", `${baseUrl}/api/LocationApi/getlocation/${id}`);
+    const res = await fetch(`${baseUrl}/api/LocationApi/getlocation/${id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -48,7 +48,7 @@ export async function createLocation(locationFormData : LocationFormData) {
   //object destructuring 
   const { id, ...payload } = locationFormData;
 
-
+  console.log(id);
   try {
     console.log("Calling:", `${baseUrl}/api/LocationApi`);
     const res = await fetch(`${baseUrl}/api/LocationApi`, {
@@ -92,7 +92,7 @@ export async function updateLocation(id: number, locationData : LocationFormData
 
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
 
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');
@@ -127,7 +127,7 @@ export async function parseContent(content : any) {
       
     if (!res.ok) {
       // Handle Badrequest error from api
-      let errorMessage = '';
+      const errorMessage = '';
        
       if (responseBody?.error) {
         throw new Error(responseBody?.error + '. Request failed!');

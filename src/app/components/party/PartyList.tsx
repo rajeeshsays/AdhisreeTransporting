@@ -2,16 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./partyList.module.css";
-import { PartyFormData } from "@/app/types/types";
-import { createParty, deleteParty, getPartyAll, updateParty } from "@/app/services/partyService";
-import PartyEntryForm from "../edit/page";
+import {deleteParty, getPartyAll } from "@/app/services/partyService";
+import PartyEntryForm from "@/app/components/party/PartyEntryForm";
 
-export default function PartyListPage() {
+export default function PartyList() {
   const [partyList, setPartyList] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedParty, setSelectedParty] = useState<any | null>(null);
-  const [operationMode , setOperationMode] = useState('');
-  
+  const [selectedPartyId, setSelectedPartyId] = useState<any | null>(null);
+
 
   useEffect(() => {
     async function fetchPartyList() {
@@ -36,21 +34,21 @@ export default function PartyListPage() {
   }, []);
 
 const handleAdd = () => {
-  setSelectedParty(null);
+  setSelectedPartyId(null);
   setIsModalOpen(true);
-  setOperationMode('Add');
 };
 
 const handleEdit = (party: any) => {
   console.log('Editing party:', party);
-  setSelectedParty(party);
+  setSelectedPartyId(party.id);
   setIsModalOpen(true)
-  setOperationMode('Edit');
 };
 
-useEffect(()=>{
-
-},[selectedParty])
+  const closeModal = ()=>
+  {
+  setIsModalOpen(false);
+  selectedPartyId(null);
+  }
 
 
 const handleDelete = async (id: number) => {
@@ -62,34 +60,9 @@ const handleDelete = async (id: number) => {
 };
 
 
-const handleSave = async (id : number,formData : PartyFormData) => {
-  try {
 
-  console.log("formdata te list " +formData)
 
-   //const response =  await createTransport(formData);
-    const response = selectedParty?.id
-      ? await updateParty(selectedParty.id, formData)
-      : await createParty(formData);
 
-    if (response.ok) {
-      const savedParty = await response.json();
-      setPartyList(prev => {
-        const existingIndex = prev.findIndex(t => t.id === savedParty.id);
-        if (existingIndex !== -1) {
-          const updatedList = [...prev];
-          updatedList[existingIndex] = savedParty;
-          return updatedList;
-        } else {
-          return [...prev, savedParty];
-        }
-      });
-    }
-  } catch (error) {
-    alert(error);
-    console.error(error);
-  }
-};
 
   return (
     <div className={styles.page}>
@@ -151,7 +124,7 @@ onClick={() => handleEdit(party)}
      className={styles.deleteBtn}
      onClick={() => handleDelete(party.id)}
    >
-     Delete
+     Delete 
    </button></td>
   
   </tr>
@@ -164,20 +137,8 @@ onClick={() => handleEdit(party)}
 
  {isModalOpen && (
    <PartyEntryForm
-     party={selectedParty}
-     onClose={() => setIsModalOpen(false)}
-     operationMode={operationMode}
-     onSave={(id : number,formData : any) => {
-       console.log("Saving party entry with id:", id, "and data:", formData);
-       setIsModalOpen(false);
-       handleSave(id, formData);
-       getPartyAll(1,100);
-     }}
-     onDelete={(id : number) => {
-       setIsModalOpen(false);
-       deleteParty(id);
-       getPartyAll(1,100);
-     }}
+     id={selectedPartyId}
+     closeModal= {closeModal}
      />
    
 )}

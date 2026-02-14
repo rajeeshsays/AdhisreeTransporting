@@ -1,7 +1,7 @@
-import { off } from "process";
+
 
 export type TransportEntryFormData = {
-  id: string;
+  id: number;
   date: string;
   vehicleId: string;
   vehicleTypeId: string;
@@ -20,7 +20,7 @@ export type TransportEntryFormData = {
 };
 
   export type DriverFormData =   {
-    id?:string,
+    id?:number,
     name: string,
     age: string,
     dob: string,
@@ -35,18 +35,18 @@ export type TransportEntryFormData = {
   };
 
   export type LocationFormData = {
-    id :string,
+    id :number,
     name: string,
     code: string,
     description: string,
     districtId : string,
-    isActive: string,
+    isActive: boolean,
     
   }
 
   export type PartyFormData  = {
 
-    id : string,
+    id : number,
     name : string,
     code : string,
     gstNo : string,
@@ -58,21 +58,21 @@ export type TransportEntryFormData = {
     contactPerson : string,
     pincode : string,
     accountId : string,
-    isActive : string,
+    isActive : boolean,
   } 
 
   export type DistrictFormData  = {
-    name: string,
+    name: number,
     code: string,
     stateId: string,
-    isActive: string,
+    isActive: boolean,
   }
 
 
   export type StateFormData  = {
-    name: string,
+    name: number,
     code: string,
-    isActive: string,
+    isActive: boolean,
   }
 
 
